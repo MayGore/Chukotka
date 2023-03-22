@@ -50,6 +50,8 @@ root.resizable(False, False)
 root.title('имя позже придумаем')
 
 canv = Canvas(root, width=800, height=500)
+frm = Frame(root, width=800, height=70)
+btn = Button(frm, text='Кнопка', bg='PaleGreen', fg='ForestGreen', command=OUT)
 
 myscrollbar = Scrollbar(root, orient="vertical", command=canv.yview)
 myscrollbar.pack(side="right", fill="y")
@@ -69,5 +71,7 @@ for i in range(10):
     canv.after(300, MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg erkugerwuguiewrg er ugre gu egue'))
 # ___________________________________________________end_____________________________________________________________
 canv.pack()
+frm.pack()
+btn.pack(anchor=NE, padx = 10, pady=10)
 root.mainloop()
 # ___________________________________________________end_____________________________________________________________
