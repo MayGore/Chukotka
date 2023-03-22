@@ -5,11 +5,10 @@ from collections import deque
 def OUT():
     line = Q.pop()
     line.pack()
-    
+
 
 def tell(line):
     Q.append(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line).pack(anchor='nw'))
-
 
 
 class Character:
@@ -67,17 +66,20 @@ canv.bind('<Configure>', lambda e: canv.configure(scrollregion=canv.bbox('all'))
 f = Frame(canv)
 canv.create_window((0, 0), window=f, anchor='nw')
 
-Q = deque
+Q = deque()
 # _________________________________________________beginning_________________________________________________________
 
 MASHA = Character('Masha')
 tell('story')
 for i in range(10):
-    canv.after(300, tell('this is a story - jhyghwehb jkfjidhjbew nmdflgjhejwnmfd lkjihebwenmfsmdjkb hnemf ,ekjhfbnmkvjhfvb nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv'))
-    canv.after(300, MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg erkugerwuguiewrg er ugre gu egue'))
+    tell('this is a story - jhyghwehb jkfjidhjbew nmdflgjhejwnmfd lkjihebwenmfsmdjkb hnemf ,ekjhfbnmkvjhfvb '
+         'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv')
+    MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
+                'erkugerwuguiewrg er ugre gu egue')
+
 # ___________________________________________________end_____________________________________________________________
 canv.pack()
 frm.pack()
-btn.pack(anchor=NE, padx = 10, pady=10)
+btn.pack(anchor=NE, padx=10, pady=10)
 root.mainloop()
 # ___________________________________________________end_____________________________________________________________
