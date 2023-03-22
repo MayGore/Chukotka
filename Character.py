@@ -2,9 +2,14 @@ from tkinter import *
 import time
 
 
+def OUT():
+    line = Q.pop()
+    line.pack()
+    
+
 def tell(line):
-    Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line).pack(anchor='nw')
-    # time.sleep(1)
+    Q.append(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line).pack(anchor='nw'))
+
 
 
 class Character:
@@ -23,8 +28,7 @@ class Character:
     # for all
     def utter(self, line):
         lab = Label(f, fg=self.color, font=20, wraplength=500, justify=LEFT, text=self.name + ': ' + line)
-        lab.pack(anchor='nw')
-        # time.sleep(3)
+        Q.append(lab)
 
     # npc only - unique for all
     def tell_skill_details(self):
@@ -62,6 +66,8 @@ canv.bind('<Configure>', lambda e: canv.configure(scrollregion=canv.bbox('all'))
 
 f = Frame(canv)
 canv.create_window((0, 0), window=f, anchor='nw')
+
+Q = deque
 # _________________________________________________beginning_________________________________________________________
 
 MASHA = Character('Masha')
