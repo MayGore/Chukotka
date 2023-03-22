@@ -1,5 +1,5 @@
 from tkinter import *
-import time
+from collections import deque
 
 
 def OUT():
