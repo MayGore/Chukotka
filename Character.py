@@ -48,7 +48,7 @@ class Player:
 
 # _________________________________________________beginning_________________________________________________________
 root = Tk()
-root.geometry('800x500')
+root.geometry('800x570')
 root.resizable(False, False)
 root.title('имя позже придумаем')
 
