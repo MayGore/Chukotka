@@ -3,8 +3,11 @@ from collections import deque
 
 
 def OUT():
-    line = Q.pop()
-    line.pack(anchor='nw')
+    global canv
+    if Q:
+        line = Q.popleft()
+        canv.configure(height=canv.winfo_height() + 20)
+        line.pack(anchor='nw')
 
 
 def tell(line):
@@ -46,28 +49,34 @@ class Player:
     skills = []
 
 
-# _________________________________________________beginning_________________________________________________________
+# _________________________________________________BEGINNING>________________________________________________________
 root = Tk()
-root.geometry('800x570')
+root.geometry('800x600')
 root.resizable(False, False)
 root.title('имя позже придумаем')
 
-canv = Canvas(root, width=800, height=500)
-frm = Frame(root, width=800, height=70)
-btn = Button(frm, text='Кнопка', bg='PaleGreen', fg='ForestGreen', command=OUT)
+frm1 = LabelFrame(root, width=800, height=500)
 
-myscrollbar = Scrollbar(root, orient="vertical", command=canv.yview)
-myscrollbar.pack(side="right", fill="y")
+canv = Canvas(frm1,width=800, height=500)
+canv.pack(fill="both", expand=True)
 
-canv.configure(yscrollcommand=myscrollbar.set)
+scrlbar = Scrollbar(canv ,orient="vertical", command=canv.yview)
+scrlbar.pack(side="right", fill="y")
+
+canv.configure(yscrollcommand=scrlbar.set)
 
 canv.bind('<Configure>', lambda e: canv.configure(scrollregion=canv.bbox('all')))
 
-f = Frame(canv)
+f = Frame(canv, width=800, height=500)
 canv.create_window((0, 0), window=f, anchor='nw')
 
+frm2 = Frame(root, width=800, height=70)
+btn = Button(frm2, text='Продолжить', bg='PaleGreen', fg='ForestGreen', command=OUT)
+
 Q = deque()
-#______________________________________________window for choice_____________________________________________________
+
+
+# ______________________________________________window for choice_____________________________________________________
 
 def dialogue(event):
     def first_button():
@@ -93,10 +102,9 @@ def dialogue(event):
     btn2 = Button(frame, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
     btn2.pack(side = RIGHT, padx = 10)
 
-    
 root.bind('<Return>', dialogue)
 
-# _________________________________________________beginning_________________________________________________________
+# _________________________________________________<BEGINNING________________________________________________________
 
 MASHA = Character('Masha')
 tell('story')
@@ -106,9 +114,9 @@ for i in range(10):
     MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
                 'erkugerwuguiewrg er ugre gu egue')
 
-# ___________________________________________________end_____________________________________________________________
-canv.pack()
-frm.pack()
-btn.pack(anchor=NE, padx=10, pady=10)
+# ___________________________________________________END>_____________________________________________________________
+frm1.pack(fill="both", expand=True)
+frm2.pack(anchor='s')
+btn.pack(anchor='ne', padx=10, pady=10)
 root.mainloop()
-# ___________________________________________________end_____________________________________________________________
+# ___________________________________________________<END_____________________________________________________________
