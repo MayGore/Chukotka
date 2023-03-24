@@ -104,6 +104,34 @@ def dialogue(event):
 
 root.bind('<Return>', dialogue)
 
+# ______________________________________________window for input_____________________________________________________
+
+def input_info(event):
+    def button():
+        new = from_user.get()
+        info.destroy()
+        print(new)  # контроль
+
+    info = Toplevel(root)
+    info['bg'] = 'moccasin'
+    info.title('Ввод')
+    info.geometry('350x150+500+100')
+    info.grab_set()
+    # какой-то текст
+    question = Label(info, text='Введите паспортные данные и номер карты', bg='moccasin',
+                     fg='PeachPuff4', font=('Times New Roman', 12))
+    question.pack()
+    # окно ввода
+    from_user = Entry(info)
+    from_user.pack(anchor=NW)
+    from_user.focus()  # курсор
+    # кнопка, сохраняет инфу в переменную
+    btn_in = Button(info, text='Принять!', bg='MediumPurple4', fg='OldLace', command=button)
+    btn_in.pack(anchor=NW)
+
+
+root.bind('<Button-3>', input_info)  # правая кнопка мыши
+
 # _________________________________________________<BEGINNING________________________________________________________
 
 MASHA = Character('Masha')
