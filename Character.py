@@ -81,14 +81,17 @@ def dialogue(event):
     dial = Toplevel(root)
     dial['bg'] = 'LightCyan'
     dial.title('Что будем делать?')
-    dial.geometry('200x150+500+100')
+    dial.geometry('300x150+500+100')
     dial.grab_set()
+    dial.resizable(False, False)
     question = Label(dial, text = '???', bg = 'LightCyan', fg = 'SteelBlue', font = ('Times New Roman', 18))
-    question.place(x = 95, y = 30)
-    btn1 = Button(dial, text = 'Подружимся!', bg = 'Orchid', fg = 'purple', command = first_button)
-    btn1.place(x = 10, y = 80)
-    btn2 = Button(dial, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
-    btn2.place(x = 110, y = 80)
+    question.pack(padx = 95, pady = 30)
+    frame = Frame(dial, width = 300, height = 50, bg = 'LightCyan')
+    frame.pack()
+    btn1 = Button(frame, text = 'Подружимся!', bg = 'Orchid', fg = 'purple', command = first_button)
+    btn1.pack(side = LEFT, padx = 10)
+    btn2 = Button(frame, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
+    btn2.pack(side = RIGHT, padx = 10)
 
     
 root.bind('<Return>', dialogue)
