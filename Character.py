@@ -67,6 +67,31 @@ f = Frame(canv)
 canv.create_window((0, 0), window=f, anchor='nw')
 
 Q = deque()
+#______________________________________________window for choice_____________________________________________________
+
+def dialogue(event):
+    def first_button():
+        MASHA.rise_friendship()
+        dial.destroy()
+
+    def second_button():
+        MASHA.tell_skill_details()
+        dial.destroy()
+
+    dial = Toplevel(root)
+    dial['bg'] = 'LightCyan'
+    dial.title('Что будем делать?')
+    dial.geometry('200x150+500+100')
+    dial.grab_set()
+    question = Label(dial, text = '???', bg = 'LightCyan', fg = 'SteelBlue', font = ('Times New Roman', 18))
+    question.place(x = 95, y = 30)
+    btn1 = Button(dial, text = 'Подружимся!', bg = 'Orchid', fg = 'purple', command = first_button)
+    btn1.place(x = 10, y = 80)
+    btn2 = Button(dial, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
+    btn2.place(x = 110, y = 80)
+
+root.bind('<Return>', dialogue)
+
 # _________________________________________________beginning_________________________________________________________
 
 MASHA = Character('Masha')
