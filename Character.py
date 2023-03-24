@@ -4,11 +4,11 @@ from collections import deque
 
 def OUT():
     line = Q.pop()
-    line.pack()
+    line.pack(anchor='nw')
 
 
 def tell(line):
-    Q.append(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line).pack(anchor='nw'))
+    Q.append(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line))
 
 
 class Character:
@@ -90,6 +90,7 @@ def dialogue(event):
     btn2 = Button(dial, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
     btn2.place(x = 110, y = 80)
 
+    
 root.bind('<Return>', dialogue)
 
 # _________________________________________________beginning_________________________________________________________
