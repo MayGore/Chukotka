@@ -7,6 +7,16 @@ def OUT():
     if Q:
         line = Q.popleft()
         canv.configure(height=canv.winfo_height() + 20)
+        if line[-1] == '#':
+            # вызов окна с кнопками
+            res = 0
+            line[:-1].pack(anchor='nw')
+            return res
+        if line[-1] == '@':
+            # вызов окна с вводом имени
+            res = 0
+            line[:-1].pack(anchor='nw')
+            return res
         line.pack(anchor='nw')
 
 
@@ -44,7 +54,23 @@ class Character:
         self.friendship_with_player += 1
 
 
-class Player:
+class Lisa(Character):
+    pass
+
+
+class Dan(Character):
+    pass
+
+
+class Fedya(Character):
+    pass
+
+
+class Monya(Character):
+    pass
+
+
+class Player(Lisa, Dan, Fedya, Monya):
     # inherited from all npc
     skills = []
 
@@ -57,10 +83,10 @@ root.title('имя позже придумаем')
 
 frm1 = LabelFrame(root, width=800, height=500)
 
-canv = Canvas(frm1,width=800, height=500)
+canv = Canvas(frm1, width=800, height=500)
 canv.pack(fill="both", expand=True)
 
-scrlbar = Scrollbar(canv ,orient="vertical", command=canv.yview)
+scrlbar = Scrollbar(canv, orient="vertical", command=canv.yview)
 scrlbar.pack(side="right", fill="y")
 
 canv.configure(yscrollcommand=scrlbar.set)
@@ -93,16 +119,18 @@ def dialogue(event):
     dial.geometry('300x150+500+100')
     dial.grab_set()
     dial.resizable(False, False)
-    question = Label(dial, text = '???', bg = 'LightCyan', fg = 'SteelBlue', font = ('Times New Roman', 18))
-    question.pack(padx = 95, pady = 30)
-    frame = Frame(dial, width = 300, height = 50, bg = 'LightCyan')
+    question = Label(dial, text='???', bg='LightCyan', fg='SteelBlue', font=('Times New Roman', 18))
+    question.pack(padx=95, pady=30)
+    frame = Frame(dial, width=300, height=50, bg='LightCyan')
     frame.pack()
-    btn1 = Button(frame, text = 'Подружимся!', bg = 'Orchid', fg = 'purple', command = first_button)
-    btn1.pack(side = LEFT, padx = 10)
-    btn2 = Button(frame, text = 'Узнаем скиллы!', bg = 'SlateBlue', fg = 'Navy', command = second_button)
-    btn2.pack(side = RIGHT, padx = 10)
+    btn1 = Button(frame, text='Подружимся!', bg='Orchid', fg='purple', command=first_button)
+    btn1.pack(side=LEFT, padx=10)
+    btn2 = Button(frame, text='Узнаем скиллы!', bg='SlateBlue', fg='Navy', command=second_button)
+    btn2.pack(side=RIGHT, padx=10)
+
 
 root.bind('<Return>', dialogue)
+
 
 # ______________________________________________window for input_____________________________________________________
 
@@ -141,6 +169,11 @@ for i in range(10):
          'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv')
     MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
                 'erkugerwuguiewrg er ugre gu egue')
+
+LISA = Lisa('Лиза')
+DAN = Dan('Даня')
+MONYA = Monya('Моня')
+FEDYA = Fedya('Федя')
 
 # ___________________________________________________END>_____________________________________________________________
 frm1.pack(fill="both", expand=True)
