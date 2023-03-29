@@ -6,18 +6,22 @@ def OUT():
     global canv
     if Q:
         line = Q.popleft()
+        line_text = line['text']
         canv.configure(height=canv.winfo_height() + 20)
-        if line[-1] == '#':
+        if line_text[-1] == '#':
             # вызов окна с кнопками
             res = 0
-            line[:-1].pack(anchor='nw')
+            line.config(text=line_text[:-1])
+            line.pack(anchor='nw')
             return res
-        if line[-1] == '@':
+        if line_text[-1] == '@':
             # вызов окна с вводом имени
             res = 0
-            line[:-1].pack(anchor='nw')
+            line.config(text=line_text[:-1])
+            line.pack(anchor='nw')
             return res
         line.pack(anchor='nw')
+        canv.yview_scroll(6, 'units')
 
 
 def tell(line):
@@ -166,10 +170,10 @@ MASHA = Character('Masha')
 tell('story')
 for i in range(10):
     tell('this is a story - jhyghwehb jkfjidhjbew nmdflgjhejwnmfd lkjihebwenmfsmdjkb hnemf ,ekjhfbnmkvjhfvb '
-         'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv')
+         'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv#')
     MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
                 'erkugerwuguiewrg er ugre gu egue')
-
+    tell('story@')
 LISA = Lisa('Лиза')
 DAN = Dan('Даня')
 MONYA = Monya('Моня')
