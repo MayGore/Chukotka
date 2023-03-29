@@ -32,67 +32,47 @@ class Character:
     def __init__(self, name: str, color='green'):
         self.name = name
         self.color = color
-        # battle
-        self.friendship_with_player = 0
-        self.hp = 10
-        self.defence = 0
-        # knowledge
-        self.phon = 0
-        self.morph = 0
-        self.synth = 0
 
     # for all
     def utter(self, line):
         lab = Label(f, fg=self.color, font=20, wraplength=500, justify=LEFT, text=self.name + ': ' + line)
         Q.append(lab)
 
-    # npc only - unique for all
-    def tell_skill_details(self):
-        pass
 
-    # unique for all
+class Friends(Character):
+    heal = 0
+    shield = 0
+    buff = 0
+    kill = 0
+    # battle
+    friendship_with_player = 0
+    hp = 10
+    defence = 0
+    # knowledge
+    morph = 0
+    sem = 0
+    synth = 0
+
     def use_skill(self):
-        pass
+        if self.heal != 0:
+            pass
+        elif self.shield != 0:
+            pass
+        elif self.buff != 0:
+            pass
+        elif self.kill != 0:
+            pass
 
     def rise_friendship(self):
         self.friendship_with_player += 1
 
-
-class Lisa(Character):
-    def tell_skill_details(self):
-        tell('Лиза хилер - она зализывает раны. Oh no cringe')
-
-    def use_skill(self):
+    def take_academic_leave(self):
         pass
 
 
-class Dan(Character):
-    def tell_skill_details(self):
-        tell('Даня подбадривает всю команду! Все стараются атаковаь сильнее!')
-
-    def use_skill(self):
-        pass
-
-
-class Fedya(Character):
-    def tell_skill_details(self):
-        tell('Если вы назовете Федю Фердинандом, то он будет защищать вас всю жизнь')
-
-    def use_skill(self):
-        pass
-
-
-class Monya(Character):
-    def tell_skill_details(self):
-        tell('Моня может ой как сильно стукнуть')
-
-    def use_skill(self):
-        pass
-
-
-class Player(Lisa, Dan, Fedya, Monya):
+class Player(Friends):
     # inherited from all npc
-    skills = []
+    pass
 
 
 # _________________________________________________BEGINNING>________________________________________________________
@@ -190,10 +170,18 @@ tell('story')
 #     MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
 #                 'erkugerwuguiewrg er ugre gu egue')
 #     tell('story@')
-LISA = Lisa('Лиза', 'green')
-DAN = Dan('Даня', 'blue')
-MONYA = Monya('Моня', 'red')
-FEDYA = Fedya('Федя', 'orange')
+LISA = Friends('Лиза', 'green')
+LISA.heal = 4
+LISA.synth = 1
+DAN = Friends('Даня', 'blue')
+DAN.buff = 2
+DAN.morph = 1
+MONYA = Friends('Моня', 'red')
+MONYA.kill = 4
+MONYA.synth = 1
+FEDYA = Friends('Федя', 'orange')
+FEDYA.shield = 2
+FEDYA.sem = 1
 IB = Character('Инна Бисер', 'pink')
 YL = Character('Юрий Ландыш', 'purple')
 tell('это история 4 ребят и вас')
