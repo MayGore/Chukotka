@@ -48,6 +48,7 @@ class Friends(Character):
     friendship_with_player = 0
     hp = 10
     defence = 0
+    is_alive = True
     # knowledge
     morph = 0
     sem = 0
@@ -67,7 +68,7 @@ class Friends(Character):
         self.friendship_with_player += 1
 
     def take_academic_leave(self):
-        pass
+        self.is_alive = False
 
 
 class Player(Friends):
