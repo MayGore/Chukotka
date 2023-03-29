@@ -29,9 +29,9 @@ def tell(line):
 
 
 class Character:
-    def __init__(self, name: str):
+    def __init__(self, name: str, color='green'):
         self.name = name
-        self.color = 'green'
+        self.color = color
         # battle
         self.friendship_with_player = 0
         self.hp = 10
@@ -59,19 +59,35 @@ class Character:
 
 
 class Lisa(Character):
-    pass
+    def tell_skill_details(self):
+        tell('Лиза хилер - она зализывает раны. Oh no cringe')
+
+    def use_skill(self):
+        pass
 
 
 class Dan(Character):
-    pass
+    def tell_skill_details(self):
+        tell('Даня подбадривает всю команду! Все стараются атаковаь сильнее!')
+
+    def use_skill(self):
+        pass
 
 
 class Fedya(Character):
-    pass
+    def tell_skill_details(self):
+        tell('Если вы назовете Федю Фердинандом, то он будет защищать вас всю жизнь')
+
+    def use_skill(self):
+        pass
 
 
 class Monya(Character):
-    pass
+    def tell_skill_details(self):
+        tell('Моня может ой как сильно стукнуть')
+
+    def use_skill(self):
+        pass
 
 
 class Player(Lisa, Dan, Fedya, Monya):
@@ -166,19 +182,34 @@ root.bind('<Button-3>', input_info)  # правая кнопка мыши
 
 # _________________________________________________<BEGINNING________________________________________________________
 
-MASHA = Character('Masha')
+# MASHA = Character('Masha')
 tell('story')
-for i in range(10):
-    tell('this is a story - jhyghwehb jkfjidhjbew nmdflgjhejwnmfd lkjihebwenmfsmdjkb hnemf ,ekjhfbnmkvjhfvb '
-         'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv#')
-    MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
-                'erkugerwuguiewrg er ugre gu egue')
-    tell('story@')
-LISA = Lisa('Лиза')
-DAN = Dan('Даня')
-MONYA = Monya('Моня')
-FEDYA = Fedya('Федя')
-
+# for i in range(10):
+#     tell('this is a story - jhyghwehb jkfjidhjbew nmdflgjhejwnmfd lkjihebwenmfsmdjkb hnemf ,ekjhfbnmkvjhfvb '
+#          'nmnvkjhfjmr kmsjbvfrmkjs bhvffnmrks fjrmv#')
+#     MASHA.utter('I am Masha. I like iuhgyhjbjnk flfbhnksvjih ufjenkvfbhenk nvjsfkmcnfd jre grejk gewrug erukg '
+#                 'erkugerwuguiewrg er ugre gu egue')
+#     tell('story@')
+LISA = Lisa('Лиза', 'green')
+DAN = Dan('Даня', 'blue')
+MONYA = Monya('Моня', 'red')
+FEDYA = Fedya('Федя', 'orange')
+IB = Character('Инна Бисер', 'pink')
+YL = Character('Юрий Ландыш', 'purple')
+tell('это история 4 ребят и вас')
+tell('это Лиза Андреева')
+LISA.utter('здравствуйте')
+tell('это Даня Михаэль')
+DAN.utter('приввввввввввеееееееееееет роакупущ шкгсаьку чгшсарсь шучфугрч ашщйгкя ьашыкпаьшйк нщчпаькйайц шщкчп '
+          'аькушнп аьшапйуц шгчпцгшап ьцгшщачпькйшща пчтуцншщапчкща')
+tell('это Федя Сосся')
+FEDYA.utter("Я Фердинанд")
+tell('это Моня Мохская')
+MONYA.utter('йоу')
+tell("познакомимсся также с Инной Бисер и Юрием Ландышем")
+IB.utter('здравствуйте детишки')
+YL.utter('здравствуйте детишки')
+tell('теперь введите ваше имя:@')
 # ___________________________________________________END>_____________________________________________________________
 frm1.pack(fill="both", expand=True)
 frm2.pack(anchor='s')
