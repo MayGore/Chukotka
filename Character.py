@@ -2,6 +2,11 @@ from tkinter import *
 from collections import deque
 
 
+# кроме как через кучу глобальных переменных я пока не придумала, как сделать
+fighter1 = None
+fighter2 = None
+button_chosen = 0
+
 def OUT():
     global canv
     if Q:
@@ -37,6 +42,10 @@ class Character:
     def utter(self, line):
         lab = Label(f, fg=self.color, font=20, wraplength=500, justify=LEFT, text=self.name + ': ' + line)
         Q.append(lab)
+        
+    # добавила вывод строки
+    def __str__(self):
+        return self.name
 
 
 class Friends(Character):
@@ -69,11 +78,55 @@ class Friends(Character):
 
     def take_academic_leave(self):
         self.is_alive = False
+        
+    def chosen_for_fight1(self):
+        global button_chosen
+        global fighter1
+        global fighter2
+
+        if button_chosen == 0:
+            fighter1 = self
+            button_chosen = 1
+            
+        elif button_chosen == 1:
+            fighter2 = self
+            button_chosen = 0
+            fight_choice.destroy()
+            # принт пока просто для проверки, что работает
+            print(fighter1, fighter2)
 
 
 class Player(Friends):
     # inherited from all npc
     pass
+
+
+def choose_your_fighter():
+    global fight_choice
+    fight_choice = Toplevel(root)
+    fight_choice['bg'] = 'LightCyan'
+    fight_choice.title('Пора в бой!')
+    fight_choice.geometry('500x150+500+100')
+    fight_choice.grab_set()
+    fight_choice.resizable(False, False)
+
+    question = Label(fight_choice, text='Кого возьмешь в команду?', bg='LightCyan', fg='SteelBlue', font=('Times New Roman', 18))
+    question.pack(padx=95, pady=30)
+
+    frame = Frame(fight_choice, width=600, height=50, bg='LightCyan')
+    frame.pack()
+
+    btn1 = Button(frame, text='Лиза', bg='Plum', fg='purple', command=LISA.chosen_for_fight1)
+    btn1.pack(side=LEFT, padx=10)
+
+    btn2 = Button(frame, text='Даня', bg='MediumPurple', fg='Navy', command=DAN.chosen_for_fight1)
+    btn2.pack(side=RIGHT, padx=10)
+
+    btn3 = Button(frame, text='Федя', bg='PeachPuff', fg='Coral', command=FEDYA.chosen_for_fight1)
+    btn3.pack(side=LEFT, padx=10)
+
+    btn4 = Button(frame, text='Моня', bg='Pink', fg='MediumVioletRed', command=MONYA.chosen_for_fight1)
+    btn4.pack(side=LEFT, padx=10)
 
 
 # _________________________________________________BEGINNING>________________________________________________________
@@ -199,6 +252,9 @@ tell("познакомимсся также с Инной Бисер и Юрие
 IB.utter('здравствуйте детишки')
 YL.utter('здравствуйте детишки')
 tell('теперь введите ваше имя:@')
+
+# пока все-таки напишу сюда, но оно выскочит сразу с основным окном, причем в основном не потыкаться, пока с диалоговым не закончить
+fight_choice()
 # ___________________________________________________END>_____________________________________________________________
 frm1.pack(fill="both", expand=True)
 frm2.pack(anchor='s')
