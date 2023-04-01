@@ -19,6 +19,11 @@ def OUT():
             line.config(text=line_text[:-1])
             line.pack(anchor='nw')
             input_info("$? Отличное имя!")
+        if line_text[-1] == '^':
+            # вызов окна для выбора союзников в бой
+            line.config(text=line_text[:-1])
+            line.pack(anchor='nw')
+            choose_your_fighter('~ выбраны для боя')
         line.pack(anchor='nw')
         canv.yview_scroll(6, 'units')
 
@@ -36,6 +41,10 @@ class Character:
     def utter(self, line):
         lab = Label(f, fg=self.color, font=20, wraplength=500, justify=LEFT, text=self.name + ': ' + line)
         Q.append(lab)
+        
+    # добавила вывод строки
+    def __str__(self):
+        return self.name
 
 
 class Friends(Character):
@@ -162,6 +171,102 @@ def input_info(text_out):  # это строка, которая реагиру�
 
 # root.bind('<Button-3>', input_info)  # правая кнопка мыши   
 
+#______________________________________________choose your fighter__________________________________________________
+def choose_your_fighter(fighters):
+    global fighter1, fighter2, button_chosen
+    button_chosen = 0  
+    fighter1 = ''
+    fighter2 = ''
+
+    def Lisa():
+        global fighter1, fighter2, button_chosen
+        if button_chosen == 0:
+            fighter1 = LISA
+            button_chosen = 1
+            
+        elif button_chosen == 1:
+            fighter2 = LISA
+            if fighter1 != fighter2:
+                button_chosen = 0
+                fight_choice.destroy()
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
+                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+            else:
+                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+
+    def Dan():
+        global fighter1, fighter2, button_chosen
+        if button_chosen == 0:
+            fighter1 = DAN
+            button_chosen = 1
+            
+        elif button_chosen == 1:
+            fighter2 = DAN
+            if fighter1 != fighter2:
+                button_chosen = 0
+                fight_choice.destroy()
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
+                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+            else:
+                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+
+    def Fedya():
+        global fighter1, fighter2, button_chosen
+        if button_chosen == 0:
+            fighter1 = FEDYA
+            button_chosen = 1
+            
+        elif button_chosen == 1:
+            fighter2 = FEDYA
+            if fighter1 != fighter2:
+                button_chosen = 0
+                fight_choice.destroy()
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
+                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+            else:
+                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+
+    def Monya():
+        global fighter1, fighter2, button_chosen
+        if button_chosen == 0:
+            fighter1 = MONYA
+            button_chosen = 1
+            
+        elif button_chosen == 1:
+            fighter2 = MONYA
+            if fighter1 != fighter2:
+                button_chosen = 0
+                fight_choice.destroy()
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
+                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+            else:
+                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+
+    fight_choice = Toplevel(root)
+    fight_choice['bg'] = 'LightCyan'
+    fight_choice.title('Пора в бой!')
+    fight_choice.geometry('500x190+500+100')
+    fight_choice.grab_set()
+    fight_choice.resizable(False, False)
+
+    question_fighter = Label(fight_choice, text='Кого возьмешь в команду?', bg='LightCyan', fg='SteelBlue', font=('Times New Roman', 18))
+    question_fighter.pack(padx=95, pady=30)
+
+    frame = Frame(fight_choice, width=600, height=50, bg='LightCyan')
+    frame.pack()
+
+    btn1 = Button(frame, text='Лиза', bg='Plum', fg='purple', command=Lisa)
+    btn1.pack(side=LEFT, padx=10)
+
+    btn2 = Button(frame, text='Даня', bg='MediumPurple', fg='Navy', command=Dan)
+    btn2.pack(side=RIGHT, padx=10)
+
+    btn3 = Button(frame, text='Федя', bg='PeachPuff', fg='Coral', command=Fedya)
+    btn3.pack(side=LEFT, padx=10)
+
+    btn4 = Button(frame, text='Моня', bg='Pink', fg='MediumVioletRed', command=Monya)
+    btn4.pack(side=LEFT, padx=10)
+
 # _________________________________________________<BEGINNING________________________________________________________
 
 # MASHA = Character('Masha')
@@ -184,7 +289,8 @@ MONYA.synth = 1
 FEDYA = Friends('Федя', 'orange')
 FEDYA.shield = 2
 FEDYA.sem = 1
-IB = Character('Инна Бисер', 'pink')
+# сделала у Инны цвет поярче, чтобы лучше видно было
+IB = Character('Инна Бисер', 'HotPink')
 YL = Character('Юрий Ландыш', 'purple')
 tell('это история 4 ребят и вас')
 tell('это Лиза Андреева')
@@ -200,6 +306,7 @@ tell("познакомимсся также с Инной Бисер и Юрие
 IB.utter('здравствуйте детишки')
 YL.utter('здравствуйте детишки')
 tell('теперь введите ваше имя:@')
+tell('Пора в бой!^')
 # ___________________________________________________END>_____________________________________________________________
 frm1.pack(fill="both", expand=True)
 frm2.pack(anchor='s')
