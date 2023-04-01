@@ -16,10 +16,9 @@ def OUT():
             return res
         if line_text[-1] == '@':
             # вызов окна с вводом имени
-            res = 0
             line.config(text=line_text[:-1])
             line.pack(anchor='nw')
-            return res
+            input_info("$? Отличное имя!")
         line.pack(anchor='nw')
         canv.yview_scroll(6, 'units')
 
@@ -135,11 +134,13 @@ root.bind('<Return>', dialogue)
 
 # ______________________________________________window for input_____________________________________________________
 
-def input_info(event):
+def input_info(text_out):  # это строка, которая реагирует на введённое имя
     def button():
         new = from_user.get()
         info.destroy()
-        print(new)  # контроль
+        # в принимаемой строке $ заменяется введённым именем
+        Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
+                           text=f"{text_out.replace('$', name)}"))
 
     info = Toplevel(root)
     info['bg'] = 'moccasin'
@@ -147,7 +148,7 @@ def input_info(event):
     info.geometry('350x150+500+100')
     info.grab_set()
     # какой-то текст
-    question = Label(info, text='Введите паспортные данные и номер карты', bg='moccasin',
+    question = Label(info, text='Имя...', bg='moccasin',
                      fg='PeachPuff4', font=('Times New Roman', 12))
     question.pack()
     # окно ввода
@@ -159,7 +160,7 @@ def input_info(event):
     btn_in.pack(anchor=NW)
 
 
-root.bind('<Button-3>', input_info)  # правая кнопка мыши
+# root.bind('<Button-3>', input_info)  # правая кнопка мыши   
 
 # _________________________________________________<BEGINNING________________________________________________________
 
