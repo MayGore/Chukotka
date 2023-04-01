@@ -136,7 +136,7 @@ root.bind('<Return>', dialogue)
 
 def input_info(text_out):  # это строка, которая реагирует на введённое имя
     def button():
-        new = from_user.get()
+        name = from_user.get()
         info.destroy()
         # в принимаемой строке $ заменяется введённым именем
         Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
