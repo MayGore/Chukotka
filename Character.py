@@ -32,6 +32,45 @@ def tell(line):
     Q.append(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, text=line))
 
 
+buff_count = 0
+shield_count = 0
+
+
+def FIGHT_with_morphology(fighter1, fighter2):
+    global buff_count
+    global shield_count
+    base = 0
+    # choose who is going to take action
+    # затычка:
+    chosen = DAN
+    if chosen.name == 'Даня':
+        fighter1.atk += chosen.buff + chosen.morph
+        fighter2.atk += chosen.buff + chosen.morph
+        PLAYER.atk += chosen.buff + chosen.morph
+        buff_count = 2
+    elif chosen.name == 'Лиза':
+        fighter1.hp += chosen.heal + chosen.morph
+        fighter2.hp += chosen.heal + chosen.morph
+        PLAYER.hp += chosen.heal + chosen.morph
+    elif chosen.name == 'Федя':
+        fighter1.defence += chosen.shield + chosen.morph
+        fighter2.defence += chosen.shield + chosen.morph
+        PLAYER.defence += chosen.shield + chosen.morph
+    elif chosen.name == 'Моня':
+        base = chosen.kill + chosen.morph
+    damage_dealt = base + chosen.atk
+    damage_taken = 4 - chosen.defence
+    tell(f'{chosen.name} наносит Морфологии {damage_dealt} урона!!')
+    MORPH.hp -= damage_dealt
+    if MORPH.hp <= 0:
+        return
+    chosen.hp -= damage_taken
+    if chosen.hp <= 0:
+        tell(f'{chosen.name} больше не может выдержать. {chosen.name} уходит в академ.')
+        chosen.is_alive = False
+    FIGHT_with_morphology()
+
+
 class Character:
     def __init__(self, name: str, color='green'):
         self.name = name
@@ -41,10 +80,17 @@ class Character:
     def utter(self, line):
         lab = Label(f, fg=self.color, font=20, wraplength=500, justify=LEFT, text=self.name + ': ' + line)
         Q.append(lab)
-        
+
     # добавила вывод строки
     def __str__(self):
         return self.name
+
+
+class Monster(Character):
+    def __init__(self, name: str, hp=0):
+        self.name = name
+        self.color = 'red'
+        self.hp = hp
 
 
 class Friends(Character):
@@ -54,6 +100,7 @@ class Friends(Character):
     kill = 0
     # battle
     friendship_with_player = 0
+    atk = 2
     hp = 10
     defence = 0
     is_alive = True
@@ -61,16 +108,6 @@ class Friends(Character):
     morph = 0
     sem = 0
     synth = 0
-
-    def use_skill(self):
-        if self.heal != 0:
-            pass
-        elif self.shield != 0:
-            pass
-        elif self.buff != 0:
-            pass
-        elif self.kill != 0:
-            pass
 
     def rise_friendship(self):
         self.friendship_with_player += 1
@@ -169,12 +206,12 @@ def input_info(text_out):  # это строка, которая реагиру�
     btn_in.pack(anchor=NW)
 
 
-# root.bind('<Button-3>', input_info)  # правая кнопка мыши   
+# root.bind('<Button-3>', input_info)  # правая кнопка мыши
 
-#______________________________________________choose your fighter__________________________________________________
+# ______________________________________________choose your fighter__________________________________________________
 def choose_your_fighter(fighters):
     global fighter1, fighter2, button_chosen
-    button_chosen = 0  
+    button_chosen = 0
     fighter1 = ''
     fighter2 = ''
 
@@ -183,14 +220,14 @@ def choose_your_fighter(fighters):
         if button_chosen == 0:
             fighter1 = LISA
             button_chosen = 1
-            
+
         elif button_chosen == 1:
             fighter2 = LISA
             if fighter1 != fighter2:
                 button_chosen = 0
                 fight_choice.destroy()
-                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
-                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
+                                   text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
                 question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
@@ -199,14 +236,14 @@ def choose_your_fighter(fighters):
         if button_chosen == 0:
             fighter1 = DAN
             button_chosen = 1
-            
+
         elif button_chosen == 1:
             fighter2 = DAN
             if fighter1 != fighter2:
                 button_chosen = 0
                 fight_choice.destroy()
-                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
-                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
+                                   text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
                 question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
@@ -215,14 +252,14 @@ def choose_your_fighter(fighters):
         if button_chosen == 0:
             fighter1 = FEDYA
             button_chosen = 1
-            
+
         elif button_chosen == 1:
             fighter2 = FEDYA
             if fighter1 != fighter2:
                 button_chosen = 0
                 fight_choice.destroy()
-                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
-                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
+                                   text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
                 question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
@@ -231,14 +268,14 @@ def choose_your_fighter(fighters):
         if button_chosen == 0:
             fighter1 = MONYA
             button_chosen = 1
-            
+
         elif button_chosen == 1:
             fighter2 = MONYA
             if fighter1 != fighter2:
                 button_chosen = 0
                 fight_choice.destroy()
-                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT, 
-                                text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
+                Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
+                                   text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
                 question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
@@ -249,7 +286,8 @@ def choose_your_fighter(fighters):
     fight_choice.grab_set()
     fight_choice.resizable(False, False)
 
-    question_fighter = Label(fight_choice, text='Кого возьмешь в команду?', bg='LightCyan', fg='SteelBlue', font=('Times New Roman', 18))
+    question_fighter = Label(fight_choice, text='Кого возьмешь в команду?', bg='LightCyan', fg='SteelBlue',
+                             font=('Times New Roman', 18))
     question_fighter.pack(padx=95, pady=30)
 
     frame = Frame(fight_choice, width=600, height=50, bg='LightCyan')
@@ -266,6 +304,7 @@ def choose_your_fighter(fighters):
 
     btn4 = Button(frame, text='Моня', bg='Pink', fg='MediumVioletRed', command=Monya)
     btn4.pack(side=LEFT, padx=10)
+
 
 # _________________________________________________<BEGINNING________________________________________________________
 
@@ -284,11 +323,12 @@ DAN = Friends('Даня', 'blue')
 DAN.buff = 2
 DAN.morph = 1
 MONYA = Friends('Моня', 'red')
-MONYA.kill = 4
+MONYA.kill = 2
 MONYA.synth = 1
 FEDYA = Friends('Федя', 'orange')
 FEDYA.shield = 2
 FEDYA.sem = 1
+PLAYER = Player('=', 'black')
 # сделала у Инны цвет поярче, чтобы лучше видно было
 IB = Character('Инна Бисер', 'HotPink')
 YL = Character('Юрий Ландыш', 'purple')
@@ -307,6 +347,8 @@ IB.utter('здравствуйте детишки')
 YL.utter('здравствуйте детишки')
 tell('теперь введите ваше имя:@')
 tell('Пора в бой!^')
+
+MORPH = Monster('Морфология', 100)
 # ___________________________________________________END>_____________________________________________________________
 frm1.pack(fill="both", expand=True)
 frm2.pack(anchor='s')
