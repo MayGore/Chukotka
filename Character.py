@@ -2,6 +2,35 @@ from tkinter import *
 from collections import deque
 
 
+class Window_class:
+
+    def __init__(self, size, title, text, btn_list: list, field_for_input = None):
+        self.wind = Toplevel(root)
+        self.wind['bg'] = 'LightCyan'
+        self.wind.title(title)
+        self.wind.geometry(size)
+        self.wind.grab_set()
+        self.wind.resizable(False, False)
+        self.wind
+
+        self.quest = Label(self.wind, text=text, bg='LightCyan', fg='SteelBlue',
+                                font=('Times New Roman', 18))
+        self.quest.pack(padx=95, pady=30)
+
+        if field_for_input:
+            self.field = Entry(self.wind)
+            self.field.pack(anchor=NW)
+            self.field.focus()
+
+        self.frame = Frame(self.wind, width=600, height=50, bg='LightCyan')
+        self.frame.pack()
+
+        for btn in btn_list:
+            Button(self.frame, text=btn[0], bg='Plum', fg='purple', command=btn[1]).pack(side=LEFT, padx=10)
+
+    def crash(self):
+        self.wind.destroy()
+
 def OUT():
     global canv
     if Q:
@@ -148,65 +177,18 @@ btn = Button(frm2, text='Продолжить', bg='PaleGreen', fg='ForestGreen'
 Q = deque()
 
 
-# ______________________________________________window for choice_____________________________________________________
-
-def dialogue(event):
-    def first_button():
-        MASHA.rise_friendship()
-        dial.destroy()
-
-    def second_button():
-        MASHA.tell_skill_details()
-        dial.destroy()
-
-    dial = Toplevel(root)
-    dial['bg'] = 'LightCyan'
-    dial.title('Что будем делать?')
-    dial.geometry('300x150+500+100')
-    dial.grab_set()
-    dial.resizable(False, False)
-    question = Label(dial, text='???', bg='LightCyan', fg='SteelBlue', font=('Times New Roman', 18))
-    question.pack(padx=95, pady=30)
-    frame = Frame(dial, width=300, height=50, bg='LightCyan')
-    frame.pack()
-    btn1 = Button(frame, text='Подружимся!', bg='Orchid', fg='purple', command=first_button)
-    btn1.pack(side=LEFT, padx=10)
-    btn2 = Button(frame, text='Узнаем скиллы!', bg='SlateBlue', fg='Navy', command=second_button)
-    btn2.pack(side=RIGHT, padx=10)
-
-
-root.bind('<Return>', dialogue)
-
-
 # ______________________________________________window for input_____________________________________________________
 
 def input_info(text_out):  # это строка, которая реагирует на введённое имя
     def button():
-        name = from_user.get()
-        info.destroy()
+        name = info.field.get()
+        info.crash()
         # в принимаемой строке $ заменяется введённым именем
         Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
                            text=f"{text_out.replace('$', name)}"))
+        
+    info = Window_class(size='350x150+500+100', title='Ввод', text='Имя...', field_for_input=True, btn_list=([('Принять!', button)]))
 
-    info = Toplevel(root)
-    info['bg'] = 'moccasin'
-    info.title('Ввод')
-    info.geometry('350x150+500+100')
-    info.grab_set()
-    # какой-то текст
-    question = Label(info, text='Имя...', bg='moccasin',
-                     fg='PeachPuff4', font=('Times New Roman', 12))
-    question.pack()
-    # окно ввода
-    from_user = Entry(info)
-    from_user.pack(anchor=NW)
-    from_user.focus()  # курсор
-    # кнопка, сохраняет инфу в переменную
-    btn_in = Button(info, text='Принять!', bg='MediumPurple4', fg='OldLace', command=button)
-    btn_in.pack(anchor=NW)
-
-
-# root.bind('<Button-3>', input_info)  # правая кнопка мыши
 
 # ______________________________________________choose your fighter__________________________________________________
 def choose_your_fighter(fighters):
@@ -215,7 +197,7 @@ def choose_your_fighter(fighters):
     fighter1 = ''
     fighter2 = ''
 
-    def Lisa():
+    def lisa():
         global fighter1, fighter2, button_chosen
         if button_chosen == 0:
             fighter1 = LISA
@@ -225,13 +207,13 @@ def choose_your_fighter(fighters):
             fighter2 = LISA
             if fighter1 != fighter2:
                 button_chosen = 0
-                fight_choice.destroy()
+                fight_choice.crash()
                 Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
                                    text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
-                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+                fight_choice.quest['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
-    def Dan():
+    def dan():
         global fighter1, fighter2, button_chosen
         if button_chosen == 0:
             fighter1 = DAN
@@ -241,13 +223,13 @@ def choose_your_fighter(fighters):
             fighter2 = DAN
             if fighter1 != fighter2:
                 button_chosen = 0
-                fight_choice.destroy()
+                fight_choice.crash()
                 Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
                                    text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
-                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+                fight_choice.quest['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
-    def Fedya():
+    def fedya():
         global fighter1, fighter2, button_chosen
         if button_chosen == 0:
             fighter1 = FEDYA
@@ -257,13 +239,13 @@ def choose_your_fighter(fighters):
             fighter2 = FEDYA
             if fighter1 != fighter2:
                 button_chosen = 0
-                fight_choice.destroy()
+                fight_choice.crash()
                 Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
                                    text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
-                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+                fight_choice.quest['text'] = 'Пожалуйста, выберите\nдругого персонажа'
 
-    def Monya():
+    def monya():
         global fighter1, fighter2, button_chosen
         if button_chosen == 0:
             fighter1 = MONYA
@@ -273,37 +255,14 @@ def choose_your_fighter(fighters):
             fighter2 = MONYA
             if fighter1 != fighter2:
                 button_chosen = 0
-                fight_choice.destroy()
+                fight_choice.crash()
                 Q.appendleft(Label(f, fg='grey', font=20, wraplength=500, justify=LEFT,
                                    text=f"{fighters.replace('~', f'{fighter1} и {fighter2}')}"))
             else:
-                question_fighter['text'] = 'Пожалуйста, выберите\nдругого персонажа'
-
-    fight_choice = Toplevel(root)
-    fight_choice['bg'] = 'LightCyan'
-    fight_choice.title('Пора в бой!')
-    fight_choice.geometry('500x190+500+100')
-    fight_choice.grab_set()
-    fight_choice.resizable(False, False)
-
-    question_fighter = Label(fight_choice, text='Кого возьмешь в команду?', bg='LightCyan', fg='SteelBlue',
-                             font=('Times New Roman', 18))
-    question_fighter.pack(padx=95, pady=30)
-
-    frame = Frame(fight_choice, width=600, height=50, bg='LightCyan')
-    frame.pack()
-
-    btn1 = Button(frame, text='Лиза', bg='Plum', fg='purple', command=Lisa)
-    btn1.pack(side=LEFT, padx=10)
-
-    btn2 = Button(frame, text='Даня', bg='MediumPurple', fg='Navy', command=Dan)
-    btn2.pack(side=RIGHT, padx=10)
-
-    btn3 = Button(frame, text='Федя', bg='PeachPuff', fg='Coral', command=Fedya)
-    btn3.pack(side=LEFT, padx=10)
-
-    btn4 = Button(frame, text='Моня', bg='Pink', fg='MediumVioletRed', command=Monya)
-    btn4.pack(side=LEFT, padx=10)
+                fight_choice.quest['text'] = 'Пожалуйста, выберите\nдругого персонажа'
+                
+    fight_choice = Window_class(size='500x190+500+100', title='Пора в бой!', text='Кого возьмешь в команду?', 
+                                btn_list=([('Лиза', lisa), ('Федя', fedya), ('Даня', dan), ('Моня', monya)]))
 
 
 # _________________________________________________<BEGINNING________________________________________________________
