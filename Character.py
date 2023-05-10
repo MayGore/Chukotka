@@ -156,7 +156,7 @@ def FIGHT_with_morphology():
     if stage_fight == 'choose active':
         print('i m in choose active')
         stage_fight = 'friends take action'
-        tell('Вы с друзьями переглядываетесь...^2^')
+        # tell('Вы с друзьями переглядываетесь...^2^')
     elif stage_fight == 'friends take action':
         base = 1
         print(f'i have chosen {chosen}')
@@ -223,7 +223,9 @@ def FIGHT_with_morphology():
             tell(f'{chosen.name} больше не может выдержать. {chosen.name} уходит в академ.')
             chosen.is_alive = False
         stage_fight = 'choose active'
-    FIGHT_with_morphology()
+        tell('Вы с друзьями переглядываетесь...^2^')
+    # FIGHT_with_morphology()
+    tell("Следующий заход!%1%")
 
 
 # _________________________________________________BEGINNING>________________________________________________________
@@ -502,6 +504,7 @@ def STORY():
         stage_save_story = stage + 1
         stage = -1
         stage_fight = 'choose active'
+        tell('Вы с друзьями переглядываетесь...^2^')
         tell('Морфология наступает...%1%')
         return
     elif stage == 4:
