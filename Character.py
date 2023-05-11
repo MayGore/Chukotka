@@ -687,8 +687,9 @@ def STORY():
         stage_save_story = stage + 1
         stage = -1
         stage_fight = 'choose active'
+        tell('Морфология наступает...')
         tell('Вы с друзьями переглядываетесь...^2^')
-        tell('Морфология наступает...%1%')
+        tell('%1%')
         return
     elif stage == 4:
         tell('Вы победили!!')
