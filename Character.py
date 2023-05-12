@@ -117,10 +117,18 @@ def OUT():
         if line_text[-1] == '%':
             # начало боя
             function_index = int(line_text[-2])
-            line.config(text=line_text[:-3])
-            line.pack(anchor='nw')
+            # тут решили не печатать, просто вызываем бой
+            # line.config(text=line_text[:-3])
+            # line.pack(anchor='nw')
             if function_index == 1:
+                # бой с морфологией
                 FIGHT_with_morphology()
+            elif function_index == 2:
+                # бой с синтаксисом
+                FIGHT_with_synth()
+            elif function_index == 3:
+                # бой с семантикой
+                FIGHT_with_sem()
         else:
             line.pack(anchor='nw')
         canv.yview_scroll(19, 'units')
@@ -156,7 +164,7 @@ def FIGHT_with_morphology():
     if stage_fight == 'choose active':
         print('i m in choose active')
         stage_fight = 'friends take action'
-        tell('Вы с друзьями переглядываетесь...^2^')
+        # tell('Вы с друзьями переглядываетесь...^2^')
     elif stage_fight == 'friends take action':
         base = 1
         print(f'i have chosen {chosen}')
@@ -179,7 +187,7 @@ def FIGHT_with_morphology():
             stage_fight = 'damage'
         else:
             stage_fight = 'player take action'
-            tell('Вы вспоминаете, все, чему научили вас друзья.^3^')
+            tell('Вы вспоминаете все, чему научили вас друзья.^3^')
     elif stage_fight == 'player take action':
         if chosen_player_skill == 'Подлечить команду':
             fighter1.hp += chosen.heal + chosen.morph
@@ -223,8 +231,185 @@ def FIGHT_with_morphology():
             tell(f'{chosen.name} больше не может выдержать. {chosen.name} уходит в академ.')
             chosen.is_alive = False
         stage_fight = 'choose active'
-    FIGHT_with_morphology()
+        tell('Вы с друзьями переглядываетесь...^2^')
+    # FIGHT_with_morphology()
+    tell("%1%")
 
+    # _______________________________________________battle with SYNTH____________________________________________________
+
+def FIGHT_with_synth():
+    global fighter1
+    global fighter2
+    global chosen
+    global base
+    global buff_count
+    global buff_count_player
+    global shield_count
+    global shield_count_player
+    global current_buff
+    global current_player_buff
+    global current_shield
+    global current_player_shield
+    global chosen_player_skill
+    global stage
+    global stage_save_story
+    global stage_fight
+
+    if stage_fight == 'choose active':
+        stage_fight = 'friends take action'
+    elif stage_fight == 'friends take action':
+        base = 1
+        if chosen.name == 'Даня':
+            current_buff = chosen.buff + chosen.synth
+            buff_count = 2
+            stage_fight = 'damage'
+        elif chosen.name == 'Лиза':
+            fighter1.hp += chosen.heal + chosen.synth
+            fighter2.hp += chosen.heal + chosen.synth
+            PLAYER.hp += chosen.heal + chosen.synth
+            stage_fight = 'damage'
+        elif chosen.name == 'Федя':
+            current_shield = chosen.shield + chosen.synth
+            shield_count = 2
+            stage_fight = 'damage'
+        elif chosen.name == 'Моня':
+            base = chosen.kill + chosen.synth
+            stage_fight = 'damage'
+        else:
+            stage_fight = 'player take action'
+            tell('Вы вспоминаете все, чему научили вас друзья.^3^')
+    elif stage_fight == 'player take action':
+        if chosen_player_skill == 'Подлечить команду':
+            fighter1.hp += chosen.heal + chosen.synth
+            fighter2.hp += chosen.heal + chosen.synth
+            PLAYER.hp += chosen.heal + chosen.synth
+        elif chosen_player_skill == 'Подбодрить всех':
+            current_player_buff = chosen.buff + chosen.synth
+            buff_count_player = 2
+        elif chosen_player_skill == 'Защитить друзей':
+            current_player_shield = chosen.shield + chosen.synth
+            shield_count_player = 2
+        else:
+            base = chosen.kill + chosen.synth
+        stage_fight = 'damage'
+    elif stage_fight == 'damage':
+        damage_dealt = base + chosen.atk
+        if buff_count > 0:
+            damage_dealt += current_buff
+            buff_count -= 1
+        if buff_count_player > 0:
+            damage_dealt += current_player_buff
+            buff_count_player -= 1
+        damage_taken = 4
+        if shield_count >= 0:
+            damage_taken -= current_shield
+            shield_count -= 1
+        if shield_count_player > 0:
+            damage_taken -= current_player_shield
+            shield_count_player -= 1
+        tell(f'{chosen.name} наносит Синтаксису {damage_dealt} урона!!')
+        SYNTH.hp -= damage_dealt
+        if SYNTH.hp <= 0:
+            tell('Синтаксис скрывается с поля боя.')
+            stage = stage_save_story
+            stage_fight = None
+            return
+        tell(f'Синтаксис смотрит на обидчика. {chosen.name} получает {damage_taken} урона.')
+        chosen.hp -= damage_taken
+        if chosen.hp <= 0:
+            tell(f'{chosen.name} больше не может выдержать. {chosen.name} уходит в академ.')
+            chosen.is_alive = False
+        stage_fight = 'choose active'
+        tell('Вы с друзьями переглядываетесь...^2^')
+    tell("%2%")
+
+# _______________________________________________battle with SEM____________________________________________________
+
+def FIGHT_with_sem():
+    global fighter1
+    global fighter2
+    global chosen
+    global base
+    global buff_count
+    global buff_count_player
+    global shield_count
+    global shield_count_player
+    global current_buff
+    global current_player_buff
+    global current_shield
+    global current_player_shield
+    global chosen_player_skill
+    global stage
+    global stage_save_story
+    global stage_fight
+
+    if stage_fight == 'choose active':
+        stage_fight = 'friends take action'
+    elif stage_fight == 'friends take action':
+        base = 1
+        if chosen.name == 'Даня':
+            current_buff = chosen.buff + chosen.sem
+            buff_count = 2
+            stage_fight = 'damage'
+        elif chosen.name == 'Лиза':
+            fighter1.hp += chosen.heal + chosen.sem
+            fighter2.hp += chosen.heal + chosen.sem
+            PLAYER.hp += chosen.heal + chosen.sem
+            stage_fight = 'damage'
+        elif chosen.name == 'Федя':
+            current_shield = chosen.shield + chosen.sem
+            shield_count = 2
+            stage_fight = 'damage'
+        elif chosen.name == 'Моня':
+            base = chosen.kill + chosen.sem
+            stage_fight = 'damage'
+        else:
+            stage_fight = 'player take action'
+            tell('Вы вспоминаете все, чему научили вас друзья.^3^')
+    elif stage_fight == 'player take action':
+        if chosen_player_skill == 'Подлечить команду':
+            fighter1.hp += chosen.heal + chosen.sem
+            fighter2.hp += chosen.heal + chosen.sem
+            PLAYER.hp += chosen.heal + chosen.sem
+        elif chosen_player_skill == 'Подбодрить всех':
+            current_player_buff = chosen.buff + chosen.sem
+            buff_count_player = 2
+        elif chosen_player_skill == 'Защитить друзей':
+            current_player_shield = chosen.shield + chosen.sem
+            shield_count_player = 2
+        else:
+            base = chosen.kill + chosen.sem
+        stage_fight = 'damage'
+    elif stage_fight == 'damage':
+        damage_dealt = base + chosen.atk
+        if buff_count > 0:
+            damage_dealt += current_buff
+            buff_count -= 1
+        if buff_count_player > 0:
+            damage_dealt += current_player_buff
+            buff_count_player -= 1
+        damage_taken = 4
+        if shield_count >= 0:
+            damage_taken -= current_shield
+            shield_count -= 1
+        if shield_count_player > 0:
+            damage_taken -= current_player_shield
+            shield_count_player -= 1
+        tell(f'{chosen.name} наносит Семантике {damage_dealt} урона!!')
+        SEM.hp -= damage_dealt
+        if SEM.hp <= 0:
+            tell('Семантика растворяется.')
+            stage = stage_save_story
+            stage_fight = None
+            return
+        tell(f'Семантика смотрит на обидчика. {chosen.name} получает {damage_taken} урона.')
+        chosen.hp -= damage_taken
+        if chosen.hp <= 0:
+            tell(f'{chosen.name} больше не может выдержать. {chosen.name} уходит в академ.')
+            chosen.is_alive = False
+        stage_fight = 'choose active'
+        tell('Вы с друзьями переглядываетесь...^2^')
+    tell("%3%")
 
 # _________________________________________________BEGINNING>________________________________________________________
 root = Tk()
@@ -502,7 +687,9 @@ def STORY():
         stage_save_story = stage + 1
         stage = -1
         stage_fight = 'choose active'
-        tell('Морфология наступает...%1%')
+        tell('Морфология наступает...')
+        tell('Вы с друзьями переглядываетесь...^2^')
+        tell('%1%')
         return
     elif stage == 4:
         tell('Вы победили!!')
