@@ -53,7 +53,7 @@ class Character:
 class Monster(Character):
     def __init__(self, name: str, hp=0):
         self.name = name
-        self.color = 'red'
+        self.color = 'maroon'
         self.hp = hp
 
 
@@ -75,6 +75,9 @@ class Friends(Character):
 
     def rise_friendship(self):
         self.friendship_with_player += 1
+
+    def down_friendship(self):
+        self.friendship_with_player -= 1
 
     def take_academic_leave(self):
         self.is_alive = False
@@ -131,6 +134,14 @@ def OUT():
                 FIGHT_with_sem()
         else:
             line.pack(anchor='nw')
+        if line_text[-1] == '*':
+            function_index = int(line_text[-2])
+            line.config(text=line_text[:-3])
+            line.pack(anchor='nw')
+            if function_index == 1:
+                fedya_question()
+            if function_index == 2:
+                answer_back()
         canv.yview_scroll(19, 'units')
     else:
         STORY()
@@ -637,8 +648,6 @@ def choose_active():
         chosen = PLAYER
         active_choice.crash()
 
-    print('i m choosing')
-
     active_choice = Window_class(size='500x190', title='', text='Выберете персонажа, который будет действовать',
                                  btn_list=([(fighter1.name, choose_fighter1_as_active),
                                             (fighter2.name, choose_fighter2_as_active),
@@ -685,6 +694,36 @@ def choose_skill_for_player():
                                     (PLAYER.skills[3], choose_fourth_skill)]))
 
 
+# _________________________________________________interactions_______________________________________________________
+
+def fedya_question():
+    def fed_zdrv():
+        FEDYA.utter('О, ты запомнил мое имя!')
+        FEDYA.rise_friendship()
+        call.crash()
+
+    def fed_privet():
+        FEDYA.utter('Не называй меня так!*2*')
+        call.crash()
+
+    call = Window_class(size='500x190+500+100', title='Надо позвать Федю', text='Как позовёшь Федю?',
+                        btn_list=([('Федя, привет!', fed_privet), ('Фердинанд, здравствуй!', fed_zdrv)]))
+
+
+def answer_back():
+    def sorry():
+        FEDYA.utter('Ладно, проехали')
+        answer.crash()
+
+    def not_sorry():
+        FEDYA.utter(f'Ну и иди лесом, {PLAYER.name}!')
+        FEDYA.down_friendship()
+        answer.crash()
+
+    answer = Window_class(size='500x190+500+100', title='', text='Что ответить?',
+                          btn_list=([('Прости, больше не буду', sorry), ('Всё равно будешь Федей', not_sorry)]))
+
+
 # _________________________________________________<BEGINNING________________________________________________________
 
 stage_fight = None
@@ -714,8 +753,10 @@ def STORY():
         # YL.utter('здравствуйте детишки')
         tell('теперь введите ваше имя:@')
     elif stage == 2:
-        tell('Пора в бой!^1^')
+        tell('Подошёл Федя*1*')
     elif stage == 3:
+        tell('Пора в бой!^1^')
+    elif stage == 4:
         tell(f'{fighter1} и вы стали ближе!')
         tell(f'{fighter2} и вы стали ближе!')
         fighter1.friendship_with_player += 1
@@ -743,7 +784,7 @@ def STORY():
         tell('Вы с друзьями переглядываетесь...^2^')
         tell('%1%')
         return
-    elif stage == 4:
+    elif stage == 5:
         tell('Вы победили!!')
     stage += 1
 
