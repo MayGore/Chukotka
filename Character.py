@@ -533,8 +533,8 @@ fight_with_morph_finished = False
 fight_with_synth_finished = False
 fight_with_sem_finished = False
 MORPH = Monster('Морфология', 20)
-SYNTH = Monster('Синтаксис', 150)
-SEM = Monster('Семантика', 200)
+SYNTH = Monster('Синтаксис', 30)
+SEM = Monster('Семантика', 40)
 
 
 # ______________________________________________window functions_____________________________________________________
@@ -648,7 +648,7 @@ def choose_active():
         chosen = PLAYER
         active_choice.crash()
 
-    active_choice = Window_class(size='500x190', title='', text='Выберете персонажа, который будет действовать',
+    active_choice = Window_class(size='500x190', title='', text='Выберете персонажа,\nкоторый будет действовать',
                                  btn_list=([(fighter1.name, choose_fighter1_as_active),
                                             (fighter2.name, choose_fighter2_as_active),
                                             (PLAYER.name, choose_player_as_active)]))
@@ -684,8 +684,8 @@ def choose_skill_for_player():
     elif len(PLAYER.skills) == 3:
         w = Window_class(size='500x190', title='', text='Выберете, что вы будете делать',
                          btn_list=([(PLAYER.skills[0], choose_first_skill),
-                                    (PLAYER.skills[0], choose_second_skill),
-                                    (PLAYER.skills[1], choose_third_skill)]))
+                                    (PLAYER.skills[2], choose_second_skill),
+                                    (PLAYER.skills[3], choose_third_skill)]))
     else:
         w = Window_class(size='500x190', title='', text='Выберете, что вы будете делать',
                          btn_list=([(PLAYER.skills[0], choose_first_skill),
@@ -699,7 +699,6 @@ def choose_skill_for_player():
 def fedya_question():
     def fed_zdrv():
         FEDYA.utter('О, ты запомнил мое имя!')
-        FEDYA.rise_friendship()
         call.crash()
 
     def fed_privet():
@@ -717,7 +716,6 @@ def answer_back():
 
     def not_sorry():
         FEDYA.utter(f'Ну и иди лесом, {PLAYER.name}!')
-        FEDYA.down_friendship()
         answer.crash()
 
     answer = Window_class(size='500x190+500+100', title='', text='Что ответить?',
@@ -739,19 +737,21 @@ def STORY():
         return
     if stage == 1:
         tell('это история 4 ребят и вас')
-        # tell('это Лиза Андреева')
-        # LISA.utter('здравствуйте')
-        # tell('это Даня Михаэль')
-        # DAN.utter('приввввввввввеееееееееееет роакупущ шкгсаьку чгшсарсь шучфугрч ашщйгкя ьашыкпаьшйк нщчпаькйайц шщкчп'
-        #           'аькушнп аьшапйуц шгчпцгшап ьцгшщачпькйшща пчтуцншщапчкща')
-        # tell('это Федя Сосся')
-        # FEDYA.utter("Я Фердинанд")
-        # tell('это Моня Мохская')
-        # MONYA.utter('йоу')
-        # tell("познакомимсся также с Инной Бисер и Юрием Ландышем")
-        # IB.utter('здравствуйте детишки')
-        # YL.utter('здравствуйте детишки')
-        tell('теперь введите ваше имя:@')
+        tell('это Лиза Андреева')
+        LISA.utter('здравствуйте')
+        tell('это Даня Михаэль')
+        DAN.utter('давай вместе идти к мечте')
+        tell('это Федя Сосся')
+        FEDYA.utter("Я Фердинанд")
+        tell('Ему не нравится, когда его называют Федей')
+        tell('это Моня Мохская')
+        MONYA.utter('йоу че как жизнь')
+        tell('в первый день учебы Юрий Ландыш давал приветственную речь')
+        YL.utter('здравствуйте детишки')
+        YL.utter('надеюсь, у вас все будет хорошо')
+        YL.utter('а если нет, моя дверь всегда открыта для вас')
+        IB.utter('и моя. чая хваатит на всех')
+        tell('ваши однокурсники подошли познакомиться:@')
     elif stage == 2:
         tell('Подошёл Федя*1*')
     elif stage == 3:
@@ -785,6 +785,76 @@ def STORY():
         tell('%1%')
         return
     elif stage == 5:
+        tell('Вы победили!!')
+    elif stage == 6:
+        tell('Прошла неделя')
+        tell('Внезапно вам объявили о предстоящем бое с синтаксисом')
+    elif stage == 7:
+        tell('Пора в бой!^1^')
+    elif stage == 8:
+        tell(f'{fighter1} и вы стали ближе!')
+        tell(f'{fighter2} и вы стали ближе!')
+        fighter1.friendship_with_player += 1
+        if fighter1.friendship_with_player == 1:
+            PLAYER.heal += fighter1.heal // 2
+            PLAYER.buff += fighter1.buff // 2
+            PLAYER.shield += fighter1.shield // 2
+            PLAYER.kill += fighter1.kill // 2
+            PLAYER.skills.append(fighter1.skill)
+        fighter2.friendship_with_player += 1
+        if fighter2.friendship_with_player == 1:
+            PLAYER.heal += fighter2.heal // 2
+            PLAYER.buff += fighter2.buff // 2
+            PLAYER.shield += fighter2.shield // 2
+            PLAYER.kill += fighter2.kill // 2
+            PLAYER.skills.append(fighter2.skill)
+        if fighter1.synth == 1:
+            fighter1.utter('Я чувствую себя так уверенно!')
+        if fighter2.synth == 1:
+            fighter2.utter('Я чувствую себя очень уверенно!')
+        stage_save_story = stage + 1
+        stage = -1
+        stage_fight = 'friends take action'
+        tell('Синтаксис наступает...')
+        tell('Вы с друзьями переглядываетесь...^2^')
+        tell('%2%')
+        return
+    elif stage == 9:
+        tell('Вы победили!!')
+    elif stage == 10:
+        tell('Только вы собрались отдохнуть, как дали новое задание')
+        tell('На этот раз вам предстоит столкнуться с семантикой')
+    elif stage == 11:
+        tell('Пора в бой!^1^')
+    elif stage == 12:
+        tell(f'{fighter1} и вы стали ближе!')
+        tell(f'{fighter2} и вы стали ближе!')
+        fighter1.friendship_with_player += 1
+        if fighter1.friendship_with_player == 1:
+            PLAYER.heal += fighter1.heal // 2
+            PLAYER.buff += fighter1.buff // 2
+            PLAYER.shield += fighter1.shield // 2
+            PLAYER.kill += fighter1.kill // 2
+            PLAYER.skills.append(fighter1.skill)
+        fighter2.friendship_with_player += 1
+        if fighter2.friendship_with_player == 1:
+            PLAYER.heal += fighter2.heal // 2
+            PLAYER.buff += fighter2.buff // 2
+            PLAYER.shield += fighter2.shield // 2
+            PLAYER.kill += fighter2.kill // 2
+            PLAYER.skills.append(fighter2.skill)
+        if fighter1.sem == 1:
+            fighter1.utter('Я чувствую себя так уверенно!')
+        if fighter2.sem == 1:
+            fighter2.utter('Я чувствую себя очень уверенно!')
+        stage_save_story = stage + 1
+        stage = -1
+        stage_fight = 'friends take action'
+        tell('Семантика наступает...')
+        tell('Вы с друзьями переглядываетесь...^2^')
+        tell('%3%')
+        return
+    elif stage == 13:
         tell('Вы победили!!')
     stage += 1
 
