@@ -132,6 +132,14 @@ def OUT():
             elif function_index == 3:
                 # бой с семантикой
                 FIGHT_with_sem()
+        if line_text[-1] == '~':
+            if MONYA.is_alive and DAN.is_alive and FEDYA.is_alive \
+                    and LISA.is_alive and PLAYER.is_alive:
+                the_end("ура! все персонажи\nуспешно закончили курс!", "kot.png")
+            else:
+                the_end("тяжела и неказиста\nжизнь российского лингвиста", "sad cat.png")
+            line.config(text=line_text[:-1])
+            line.pack(anchor='nw')
         else:
             line.pack(anchor='nw')
         if line_text[-1] == '*':
@@ -721,6 +729,19 @@ def answer_back():
     answer = Window_class(size='500x190+500+100', title='', text='Что ответить?',
                           btn_list=([('Прости, больше не буду', sorry), ('Всё равно будешь Федей', not_sorry)]))
 
+# _________________________________________________ENDING________________________________________________________
+ 
+def the_end(text, image):
+    last_window = Toplevel()
+    last_window.title("the end")
+    last_window.geometry('350x500+500+100')
+    last_window["bg"] = 'LightCyan'
+    Label(last_window, text=text, bg='LightCyan', fg='SteelBlue',
+                           font=('Times New Roman', 18)).pack()
+    img = PhotoImage(file=image)
+    Label(last_window, image=img).pack()
+
+    last_window.mainloop()
 
 # _________________________________________________<BEGINNING________________________________________________________
 
@@ -786,6 +807,13 @@ def STORY():
         return
     elif stage == 5:
         tell('Вы победили!!')
+        fighter1.utter("Уф, это было непросто...")
+        fighter2.utter("Да уж, но мы показали этой морфологии, где аффиксы зимуют!")
+        fighter1.utter(f"{PLAYER}, тебе ещё многому предстоит научиться")
+        tell(f"{fighter1} похлопывает вас по спине")
+        tell("Пока вы переводите дыхание после боя, к вам спешат Инна Бисер с Юрием Ландышем.")
+        IB.utter("Браво, дорогие коллеги! Вы отлично справились!")
+        YL.utter("Да, в честь этой небольшой победы заходите к нам пить чай с печеньками)")
     elif stage == 6:
         tell('Прошла неделя')
         tell('Внезапно вам объявили о предстоящем бое с синтаксисом')
@@ -856,6 +884,9 @@ def STORY():
         return
     elif stage == 13:
         tell('Вы победили!!')
+        YL.utter("Поздравляю! Вы справились со всеми испытаниями")
+        IB.utter('Непременно заходите к нам на чай с печеньками!')
+        tell("конец игры~")
     stage += 1
 
 
