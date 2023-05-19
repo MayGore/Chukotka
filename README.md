@@ -1,4 +1,3 @@
-# Chukotka
 group programming project - a game
 
 
