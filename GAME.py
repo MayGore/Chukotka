@@ -140,9 +140,9 @@ def OUT():
         elif line_text[-1] == '~':
             if MONYA.is_alive and DAN.is_alive and FEDYA.is_alive \
                     and LISA.is_alive and PLAYER.is_alive:
-                the_end("ура! все персонажи\nуспешно закончили курс!", "good_ending.jpg")
+                the_end("ура! все персонажи\nуспешно закончили курс!", "good_ending.png")
             else:
-                the_end("тяжела и неказиста\nжизнь российского лингвиста", "bad_ending.jpg")
+                the_end("тяжела и неказиста\nжизнь российского лингвиста", "bad_ending.png")
             line.config(text=line_text[:-1])
             line.pack(anchor='nw')
         # *_* is for story play-through decisions
@@ -739,8 +739,8 @@ def choose_skill_for_player():
     elif len(PLAYER.skills) == 3:
         w = Window_class(size='500x190', title='', text='Выберете,\nчто вы будете делать',
                          btn_list=([(PLAYER.skills[0], choose_first_skill),
-                                    (PLAYER.skills[2], choose_second_skill),
-                                    (PLAYER.skills[3], choose_third_skill)]))
+                                    (PLAYER.skills[1], choose_second_skill),
+                                    (PLAYER.skills[2], choose_third_skill)]))
     else:
         w = Window_class(size='500x190', title='', text='Выберете,\nчто вы будете делать',
                          btn_list=([(PLAYER.skills[0], choose_first_skill),
