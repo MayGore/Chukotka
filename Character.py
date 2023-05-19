@@ -140,9 +140,9 @@ def OUT():
         elif line_text[-1] == '~':
             if MONYA.is_alive and DAN.is_alive and FEDYA.is_alive \
                     and LISA.is_alive and PLAYER.is_alive:
-                the_end("ура! все персонажи\nуспешно закончили курс!", "kot.png")
+                the_end("ура! все персонажи\nуспешно закончили курс!", "good_ending.jpg")
             else:
-                the_end("тяжела и неказиста\nжизнь российского лингвиста", "sad cat.png")
+                the_end("тяжела и неказиста\nжизнь российского лингвиста", "bad_ending.jpg")
             line.config(text=line_text[:-1])
             line.pack(anchor='nw')
         # *_* is for story play-through decisions
